@@ -23,3 +23,12 @@ jobs:
           docker build . -t hello
           docker tag hello 244530008913.dkr.ecr.eu-west-1.amazonaws.com/prebenohre/first-repo:$rev
           docker push 244530008913.dkr.ecr.eu-west-1.amazonaws.com/prebenohre/first-repo:$rev
+
+      - name: Log in to DockerHub
+        run: |
+            echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+        
+      - name: Tag and push Docker image to DockerHub
+        run: |
+            docker tag hello docker.io/${{ secrets.DOCKERHUB_USERNAME }}/first-repo:$rev
+            docker push docker.io/${{ secrets.DOCKERHUB_USERNAME }}/first-repo:$rev
